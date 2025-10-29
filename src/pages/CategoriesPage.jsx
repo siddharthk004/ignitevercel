@@ -1,44 +1,47 @@
 import { useNavigate } from "react-router-dom";
 
 const categories = [
-  { name: "Fiction", color: "from-indigo-500 to-blue-500" },
-  { name: "Science", color: "from-green-400 to-teal-500" },
-  { name: "Drama", color: "from-pink-500 to-red-500" },
-  { name: "History", color: "from-amber-400 to-orange-500" },
-  { name: "Poetry", color: "from-purple-500 to-fuchsia-500" },
+  "Fiction",
+  "Philosophy",
+  "Drama",
+  "History",
+  "Humour",
+  "Adventure",
+  "Politics",
 ];
 
 function CategoriesPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-200 text-gray-800 px-4 sm:px-8 py-10">
-      <div className="bg-white/50 backdrop-blur-2xl rounded-3xl shadow-2xl p-10 sm:p-16 text-center w-full max-w-6xl border border-white/40 flex flex-col justify-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 sm:mb-6 text-indigo-700 drop-shadow-sm">
-          GutenBooks
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8F7FF] text-[#333333] font-[Montserrat] px-4 py-10">
+      <div className="text-center w-full max-w-5xl">
+        {/* Heading */}
+        <h1 className="text-[#5E56E7] text-5xl sm:text-6xl font-semibold mb-3 tracking-tight">
+          Gutenberg
         </h1>
-
-        <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-8 sm:mb-10 font-medium">
-          Browse thousands of free books by category
+        <p className="text-base sm:text-lg text-[#A0A0A0] mb-12">
+          A social cataloging website that allows you to freely search its
+          database of books, annotations, and reviews.
         </p>
 
-        {/* Responsive button grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 md:gap-8 justify-center">
+        {/* Categories Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 justify-center">
           {categories.map((cat) => (
             <button
-              key={cat.name}
-              onClick={() => navigate(`/books/${cat.name.toLowerCase()}`)}
-              className={`bg-gradient-to-r ${cat.color} px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl text-white font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all`}
+              key={cat}
+              onClick={() => navigate(`/books/${cat.toLowerCase()}`)}
+              className="bg-white text-[#5E56E7] shadow-[0_2px_5px_rgba(211,209,238,0.5)] rounded-md px-4 py-3 font-medium text-lg hover:bg-[#5E56E7] hover:text-white transition-all duration-200"
             >
-              {cat.name}
+              {cat.toUpperCase()}
             </button>
           ))}
         </div>
-
-        <p className="mt-10 sm:mt-12 text-xs sm:text-sm text-gray-700">
-          Built by <span className="font-semibold text-indigo-700">Amruta Dahatonde</span> ✨
-        </p>
       </div>
+
+      <footer className="mt-16 text-sm text-[#A0A0A0]">
+        Built by <span className="font-semibold text-[#5E56E7]">Amruta Dahatonde</span>
+      </footer>
     </div>
   );
 }

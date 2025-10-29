@@ -4,7 +4,6 @@ import { fetchBooks } from "../api";
 import BookCard from "../components/BookCard";
 import Navbar from "../components/Navbar";
 
-// Main page for showing books of a selected category
 function BooksPage() {
   const { category } = useParams();
   const [books, setBooks] = useState([]);
@@ -12,9 +11,8 @@ function BooksPage() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Fetch books from API first load or next page
   const loadBooks = async (pageUrl = "") => {
-    if (loading) return; // avoid double fetching
+    if (loading) return;
     setLoading(true);
     try {
       const data = await fetchBooks(category, search, pageUrl);
@@ -27,13 +25,11 @@ function BooksPage() {
     }
   };
 
-  // Run when category or search text changes
   useEffect(() => {
     setBooks([]);
     loadBooks();
   }, [category, search]);
 
-  // Scroll handler to load next set of books (infinite scroll)
   const handleScroll = useCallback(() => {
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 300 &&
@@ -44,13 +40,11 @@ function BooksPage() {
     }
   }, [nextUrl, loading]);
 
-  // Add and remove scroll listener
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // Open book in a new tab (HTML, PDF, or Text) ZIP files auto-download.
   const openBook = (formats) => {
     const html = formats["text/html"];
     const pdf = formats["application/pdf"];
@@ -73,28 +67,30 @@ function BooksPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 text-gray-900 flex flex-col">
-      {/* Top navigation bar */}
-      <Navbar title={`${category} Books`} />
+    <div className="min-h-screen bg-[#F8F7FF] text-[#333333] font-[Montserrat] flex flex-col">
+      {/* Navbar */}
+      <Navbar title={`${category}`} />
 
-      {/* Search bar for filtering books */}
-      <div className="mt-28 flex justify-center px-4 sm:px-6 md:px-8">
-        <div className="w-full max-w-2xl sm:max-w-3xl relative">
-          <input
-            type="text"
-            placeholder="🔍 Search by title or author..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full px-5 sm:px-6 py-3 sm:py-4 rounded-2xl border-2 border-indigo-300 bg-white/80 backdrop-blur-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all text-base sm:text-lg placeholder-gray-500"
-          />
-        </div>
+      {/* Search Bar */}
+      <div className="mt-24 flex justify-center px-4">
+        <input
+          type="text"
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full max-w-xl h-10 border border-[#E0E0E0] rounded-md px-3 shadow-[0_2px_5px_rgba(211,209,238,0.5)] focus:outline-none focus:border-[#5E56E7] placeholder-[#A0A0A0] bg-white"
+        />
       </div>
 
-      {/* Grid displaying all books */}
-      <main className="flex-1 w-full px-1 sm:px-4 md:px-6 py-6">
+      {/* Books Grid */}
+      <main className="flex-1 w-full px-4 sm:px-6 md:px-10 py-10">
+        <h2 className="text-[#5E56E7] text-2xl sm:text-3xl font-semibold mb-6 capitalize tracking-tight">
+          {category} Books
+        </h2>
+
         <div
           className="
-            grid gap-4 sm:gap-8 md:gap-10
+            grid gap-6
             grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6
             justify-items-center
           "
@@ -108,15 +104,14 @@ function BooksPage() {
               />
             ))
           ) : (
-            <p className="text-gray-500 mt-20 text-lg text-center col-span-full">
+            <p className="text-[#A0A0A0] mt-20 text-lg text-center col-span-full">
               No books found.
             </p>
           )}
         </div>
 
-        {/* Loader while fetching next books */}
         {loading && (
-          <div className="text-center text-indigo-500 mt-6 font-medium">
+          <div className="text-center text-[#5E56E7] mt-6 font-medium">
             Loading more books...
           </div>
         )}

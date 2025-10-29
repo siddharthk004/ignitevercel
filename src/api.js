@@ -1,5 +1,6 @@
+const BASE_URL = "https://cors-anywhere.herokuapp.com/https://skunkworks.ignitesol.com:8000/books";
 
-const BASE_URL = "/api/books";
+const BASE_UcRL = "http://skunkworks.ignitesol.com:8000/books";
 
 export async function fetchBooks(topic, search = "", pageUrl = "") {
   try {
