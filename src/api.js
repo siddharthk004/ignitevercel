@@ -1,4 +1,5 @@
-const BASE_URL = "https://skunkworks.ignitesol.com:8000/books";
+const proxy = "https://corsproxy.io/?";
+const BASE_URL = `${proxy}https://skunkworks.ignitesol.com:8000/books`;
 
 export async function fetchBooks(topic, search = "", pageUrl = "") {
   try {
