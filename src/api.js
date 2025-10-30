@@ -24,6 +24,6 @@ export async function fetchBooks(topic, search = "", pageUrl = "") {
     return data;
   } catch (error) {
     console.error("Error fetching books:", error);
-    return { results: [], next: null }; // prevent app crash on failure
+    return { results: [], next: null }; 
   }
 }

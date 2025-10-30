@@ -1,18 +1,80 @@
-# React + Vite
+# 📚 Ignite Book Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React-based web app that allows users to explore and read thousands of books online.  
+Built with a clean interface, smooth infinite scrolling, and smart book format handling (HTML, PDF, ZIP).
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 👩‍💻 Developed By
+**Amruta Dahatonde**
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Features
+- 📖 Browse books by category or author  
+- 🔍 Search functionality with instant results  
+- ♾️ Infinite scroll for seamless browsing  
+- 🧾 Auto-handles different book formats (HTML, PDF, TXT, ZIP)  
+- 🌈 Responsive and elegant UI using Tailwind CSS  
+- ⚡ Powered by React and Vite for fast loading  
 
-## Expanding the ESLint configuration
+---
+## 🛠️ Tech Stack
+- **Frontend:** React.js, Tailwind CSS  
+- **Routing:** React Router DOM  
+- **Build Tool:** Vite  
+- **API:** [Gutenberg Books API](http://skunkworks.ignitesol.com:8000)  
+- **Package Manager:** npm  
+- **Backend (Proxy):** Node.js (used to handle CORS)  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-"# ignite-forntend-intern" 
-"# ignitevercel" 
+---
+
+## 🌐 API Proxy Setup (to fix CORS error)
+
+Since the **Gutenberg API** does not allow direct browser access (CORS issue),  
+we use a simple **Node.js ** proxy server that fetches data on our behalf.
+
+### 🔗 Deployed Proxy Link
+https://ignite-proxy.onrender.com/api/books
+
+This proxy takes requests from the frontend → calls  
+`https://skunkworks.ignitesol.com:8000/books` → sends data back safely.
+
+#
+
+**Frontend:**  
+🌍 [https://ignitevercel.vercel.app](https://ignitevercel.vercel.app)
+
+**Backend (Proxy):**  
+🌍 [https://ignite-proxy.onrender.com/api/books](https://ignite-proxy.onrender.com/api/books)
+
+# Node JS Code For CORS Error #
+```
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; 
+
+import express from "express";
+import fetch from "node-fetch";
+import cors from "cors";
+
+const app = express();
+app.use(cors());
+
+app.get("/api/books", async (req, res) => {
+  try {
+    const query = new URLSearchParams(req.query).toString();
+    const targetUrl = `http://skunkworks.ignitesol.com:8000/books?${query}`;
+    console.log("🔗 Fetching from:", targetUrl);
+
+    const response = await fetch(targetUrl);
+    console.log("📦 Response status:", response.status);
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("❌ Error fetching from external API:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.listen(8080, () => console.log("✅ Proxy running on port 8080"));
